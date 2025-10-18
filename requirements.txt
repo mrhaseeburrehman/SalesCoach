@@ -1,7 +1,8 @@
 streamlit
-langchain==0.2.14
-langchain-community==0.2.12
-langchain-core==0.2.26
+langchain
+langchain-community
+langchain-core
+langchain-text-splitters
 faiss-cpu
 sentence-transformers
 google-genai
