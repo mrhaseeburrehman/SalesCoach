@@ -57,11 +57,27 @@ if uploaded_files:
         with st.spinner("Thinking..."):
             retrieved_docs = vectorstore.similarity_search(query, k=3)
             context = "\n\n".join([d.page_content for d in retrieved_docs])
-
-            # Ask Gemini
+            prompt = f"""
+            You are an expert AI assistant trained to answer questions **only** using the provided context.
+            Use the exact facts in the context; if something is not found, politely say you don't know.
+            
+            Context:
+            {context}
+            
+            Question: {query}
+            
+            Guidelines:
+            - Answer clearly and concisely in full sentences.
+            - Summarize or combine relevant points.
+            - Do not say "context says" — integrate it naturally.
+            - Avoid repeating the question.
+            - Use bullet points if it helps clarity.
+            
+            Answer:
+            """
             response = client.models.generate_content(
                 model="gemini-2.5-flash",
-                contents=f"Context:\n{context}\n\nQuestion: {query}\nAnswer concisely based on context."
+                contents=prompt
             )
 
             st.markdown("### 🧠 Answer")
